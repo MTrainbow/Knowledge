@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="lib/bootstrap/css/bootstrap.css">
+    <!--[if lt IE 9]>
+    <script src="lib/html5shiv/html5shiv.min.js"></script>
+    <script src="lib/respond/respond.min.js"></script>
+    <![endif]-->
+    <title>Title</title>
+    <style>
+        input {
+            outline: none;
+        }
+        form {
+            margin-bottom: 30px;
+            background: #aaa;
+        }
+    </style>
+</head>
+<body>
+<form action="#" id="form">
+    <label for="username">
+        用户名:<input type="search" id="username" name="username" placeholder="强输入用户名">
+    </label><br>
+    <label for="password">
+        密　码:<input type="text" id="password" name="password" placeholder="请输入密码">
+    </label><br>
+    <button type="submit">提交</button>
+</form>
+
+<table class="table table-hover table-bordered">
+    <caption>基本信息</caption>
+    <a href="#" class="btn btn-danger btn-block" id="btn" style="display:none">按钮</a>
+    <thead>
+        <tr>
+            <th class="text-center"><input type="checkbox" id="checkbox"></th>
+            <th class="text-center">ID</th>
+            <th class="text-center">类型</th>
+            <th class="text-center">名称</th>
+            <th class="text-center">评分</th>
+        </tr>
+    </thead>
+    <tbody id="list"></tbody>
+</table>
+<a href="#" class="btn btn-primary" disabled="disabled">按钮</a>
+<script src="lib/jquery/jquery.min.js"></script>
+<script src="lib/template-web.js"></script>
+<script id="temp" type="text/x-art-template">
+    //简洁模板
+    {{each comment}}
+    <tr class="text-center">
+        <td class="active"><input type="checkbox" data-id="{{$value.id}}"></td>
+        <td class="info">{{$value.id}}</td>
+        <td class="danger">{{$value.genres[0]}}</td>
+        <td class="info">{{$value.title}}</td>
+        <td class="warning">{{$value.rating.average}}</td>
+    </tr>
+    {{/each}}
+</script>
+<script>
+    
+    $(function () {
+        //进度条加载效果
+        $.ajax({
+            url:'http://api.douban.com/v2/movie/top250',
+            dataType:'jsonp',
+            jsonp:'callback',
+            jsonpCallback: 'handleResponse',
+            data:{
+                q : "javascript",
+                count : 15
+            },
+            success:function (response, status, xhr) {
+                console.log('状态为：' + status + ',状态是：' + xhr.statusText);
+                var html = template('temp',{comment : response.subjects});
+                // document.getElementById('list').innerHTML = html
+                $('#list').html(html);
+                <!-- 需要渲染后去添加功能-->
+                fun()
+            }
+        })
+          function fun() {
+              var arr = []
+              var $btn = $('#btn')
+              var $allCheck = $('#checkbox')
+              var $checkList = $('tbody input')
+              
+              $checkList.on('change',function () {
+                  var id = $(this).data('id')
+                  if ($(this).prop('checked')){
+                      arr.includes(id) || arr.push(id)
+                  } else {
+                      arr.splice(arr.indexOf(id),1)
+                  }
+                  if ($checkList.length == $('tbody input:checked').length){
+                      $allCheck.prop('checked',true)
+                  } else {
+                      $allCheck.prop('checked',false)
+                  }
+                  arr.length ? $btn.fadeIn() : $btn.fadeOut()
+                  $btn.prop('search','?id='+arr)
+              })
+              //全选
+              $allCheck.on('change',function () {
+                  $checkList.prop('checked',$(this).prop('checked')).trigger('change')
+              })
+          }
+    })
+    window.onload = function () {
+        var user = document.getElementById('username')
+        var psw = document.getElementById('password')
+
+        document.querySelector('button').addEventListener('click',function () {
+            var username = user.value;
+            var password = psw.value;
+            //方式一：
+            console.log('username'+'='+username+'&'+'password'+'='+password)
+            //
+            var obj = {
+                username : username,
+                password : password
+            }
+            function params(data) {
+                var arr = []
+                for(var key in data){
+                    arr.push(key+'='+data[key]);
+                }
+                return arr.join('&')
+            }
+            console.log(params(obj));
+        //方式三
+            var form = document.getElementById('form')
+            var fromDa = new  FormData(form)
+            
+            var name = fromDa.get('username')
+            var ps = fromDa.get('password')
+            console.log('username'+'='+name+'&'+'password'+'='+ps)
+
+            function render (options) {
+                var xhr = null
+                var method = options.method.toLocaleUpperCase()
+                var param = params(options.data)
+                if (window.XMLHttpRequest){
+                    xhr = new  XMLHttpRequest()
+                } else {
+                    xhr = new ActiveXObject('Microsoft.XMLHTTP')
+                }
+                if (method === 'get'){
+                    xhr.open(method,options.url+'?'+param,options.async)
+                    xhr.send()
+                }
+                if (method === 'post'){
+                    xhr.open(method,options.url,options.async)
+                    xhr.setRequestHeader('Content-Type','application/x-www-from-urlencoded')
+                    xhr.send(param)
+                }
+                xhr.addEventListener('readystatechange',function () {
+                    if (this.readyState != 4) return
+                    options.success(this.responseText)
+                })
+                /**
+                 * 参数序列化
+                 * @param obj
+                 * @returns {string}
+                 */
+                function params(data) {
+                    var arr = []
+                    for(var key in data){
+                        arr.push(key+'='+data[key])
+                    }
+                    return arr.join('&')
+                }
+
+            }
+            render({
+                url:'',
+                method:'get',
+                async:true,
+                data:{},
+                dataType:'json',
+                success:function (res) {
+                    console.log(res)
+                }
+            })
+            
+        })
+    }
+</script>
+
+</body>
+</html>

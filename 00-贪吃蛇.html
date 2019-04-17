@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>贪吃蛇</title>
+    <style>
+        body {
+            background-color: hotpink;
+        }
+        .map {
+            width: 800px;
+            height: 600px;
+            background-color:#ccc;
+            position: relative;
+
+        }
+    </style>
+</head>
+<body>
+<div class="map"></div>
+<script src="common.js"></script>
+<script>
+    //随机数对象
+    (function () {
+       function Random() {
+       }
+       Random.prototype.getRandom = function (max,min) {
+           return Math.floor(Math.random()*(max-min)+min);
+       };
+       window.Random = Random;
+    }());
+
+    //食物对象
+    (function(){
+        var elements = [];
+        var positison = "absolute";
+        function Food(x,y,width,height,color) {
+            this.x = x || 0;
+            this.y = y || 0;
+            this.height = height || 20;
+            this.width = width || 20;
+            this.color = color || "blue";
+        }
+        Food.prototype.init = function (map) {
+            remove();
+            var div = document.createElement("div");
+            div.style.position = positison;
+            div.style.backgroundColor =  this.color;
+            div.style.width = this.width + "px";
+            div.style.height = this.height + "px";
+            this.x = parseInt(Math.random()*(map.offsetWidth/this.width))*this.width ;
+            this.y = parseInt(Math.random()*(map.offsetHeight/this.height))*this.height;
+            div.style.left = this.x +"px";
+            div.style.top = this.y +"px";
+            map.appendChild(div);
+            div.style.borderRadius="5px";
+            elements.push(div);
+        };
+        function remove() {
+            for (var i=0;i<elements.length;i++){
+                var ele = elements[0];
+                ele.parentNode.removeChild(ele);
+                elements.splice(0,1);
+            }
+        }
+        window.Food= Food;
+    }());
+
+    //小蛇对象
+    (function(){
+        var elements = [];
+        function Snake(width,height,direction) {
+            this.width = width || 20;
+            this.height = height || 20;
+            this.direction = direction || "right";
+            this.body = [
+                {  x:3,y:2,color:"red"},
+                {  x:2,y:2,color:"orange"},
+                {  x:1,y:2,color:"orange"}
+                        ];
+        }
+    Snake.prototype.init = function (map) {
+            remove();
+            for(var i=0;i<this.body.length;i++){
+                var obj = this.body[i];
+                var div = document.createElement("div");
+                div.style.position="absolute";
+                div.style.width = this.width + "px";
+                div.style.height = this.height +"px";
+                div.style.left = obj.x*this.width+"px";
+                div.style.top = obj.y*this.height+"px";
+                div.style.backgroundColor =obj.color;
+                div.style.borderRadius ="5px";
+                map.appendChild(div);
+                elements.push(div);
+            }
+    };
+        Snake.prototype.move = function (map,food) {
+            var i = this.body.length-1;
+            for(;i>0;i--){  //身体部分
+                this.body[i].x = this.body[i-1].x ;
+                this.body[i].y = this.body[i-1].y ;
+            }
+            switch (this.direction) { //头部
+                case "left":
+                    this.body[0].x -=1 ;
+                    break;
+                case "right":
+                    this.body[0].x +=1 ;
+                    break;
+                case "top":
+                    this.body[0].y -=1;
+                    break;
+                case "bottom":
+                    this.body[0].y +=1;
+            }
+            //吃掉食物
+            var headX = this.body[0].x*this.width;
+            var headY = this.body[0].y*this.height;
+            console.log(food);
+            if (headX==food.x&&headY==food.y){
+                console.log("haha");
+                var last = this.body[this.body.length-1];
+                this.body.push({
+                    x:last.x,
+                    y:last.y,
+                    color:last.color
+                });
+                food.init(map);
+            }
+        };
+        //私有删除元素方法
+        function remove() {
+            var i = elements.length-1;
+          for (;i>=0;i--){
+              var ele = elements[i];
+              ele.parentNode.removeChild(ele);
+              elements.splice(i,1);
+          }
+        }
+        
+    window.Snake = Snake;
+    }());
+
+    //游戏对象
+    (function(){
+        var that = null;   //that---->给gm实例对象
+        function Game(map) {
+            this.fd = new Food();
+            this.snk = new Snake();
+            this.map = map;
+            that = this;   //--------实例对象
+        }
+        //初始化游戏对象
+        Game.prototype.init = function () {
+            this.fd.init(this.map);
+            this.snk.init(this.map);
+
+            this.runSnake(this.fd,this.map);
+            this.bindKey();
+
+        };
+        //小蛇自己移动方法
+        Game.prototype.runSnake = function(food,map){
+            var timeId=setInterval(function () {
+                this.snk.move(map,food);
+                this.snk.init(map);
+                var maxX = map.offsetWidth/this.snk.width;
+                var maxY = map.offsetHeight/this.snk.height;
+                var headX = this.snk.body[0].x;
+                var headY = this.snk.body[0].y;
+                if (headX<0||headX>=maxX){
+                    alert("游戏结束");
+                    clearInterval(timeId);
+                } if (headY<0||headY>=maxY){
+                    alert("游戏结束");
+                    clearInterval(timeId);
+                }
+            }.bind(that),180);
+        };
+    //用户按键方法
+        Game.prototype.bindKey = function(){
+          document.addEventListener("keydown",function (eve) {
+                switch (eve.keyCode){
+                    case 37:
+                        this.snk.direction="left";
+                        break;
+                    case 38:
+                        this.snk.direction="top";
+                        break;
+                    case 39:
+                        this.snk.direction="right";
+                        break;
+                    case 40:
+                        this.snk.direction="bottom";
+                        break;
+                }
+          }.bind(that),false)
+        };
+    window.Game = Game;
+    }());
+
+    var gm = new Game(document.querySelector(".map"));
+    gm.init();
+    //测试代码
+    // var fd = new Food();
+    // fd.init(document.querySelector(".map"));
+    //
+    // var snk = new Snake();
+    // snk.init(document.querySelector(".map"));
+    // snk.move(document.querySelector(".map"),fd);
+
+</script>
+</body>
+</html>

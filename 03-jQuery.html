@@ -1,0 +1,823 @@
+JS回顾**********************************************************************
+html:结构
+css：美化
+js：网页内容，动态展示效果
+
+BOM-操作浏览器的api
+DOM-操作页面元素的api
+
+简单数据类型
+Number、String、Boolean、Undefined、Null
+基本类型又叫做值类型，复杂类型又叫做引用类型
+
+值类型：简单数据类型，基本数据类型，在存储时，变量中存储的是值本身，因此叫做值类型。
+
+
+引用类型：复杂数据类型，在存储是，变量中存储的仅仅是地址（引用），因此叫做引用数据类型
+
+
+流程控制语句会把后面值隐氏转换成Boolean
+转换为true   非空字符串  非0数字  true 任何对象
+转换成false  空字符串  0  false  null  undefined
+var message;
+// 会自动把message转换成false
+if (message) {     
+  // todo...
+}
+
+for/in遍历
+delete删除对象属性
+function fun() { 
+  this.name = 'mm';
+}
+var obj = new fun(); 
+console.log(obj.name); // mm 
+delete obj.name;
+console.log(obj.name); // undefined
+
+ *实例方法：必现通过new方式创建对象来调用的方法
+ * 静态方法：通过大写构造函数名调用的方法
+
+//事件冒泡:多个元素嵌套,有层次关系,这些元素都注册了相同的事件,如果里面的元素的事件触发了,外面的元素的该事件自动的触发了.
+1. 捕获阶段
+
+2. 当前目标阶段
+
+3. 冒泡阶段
+   
+事件对象.eventPhase属性可以查看事件触发时所处的阶段
+
+事件对象的属性和方法
+
+-
+ event.type 获取事件类型
+- 
+clientX/clientY     所有浏览器都支持，窗口位置
+- 
+pageX/pageY       IE8以前不支持，页面位置
+- 
+event.target || event.srcElement 用于获取触发事件的元素
+- 
+event.preventDefault() 取消默认行为
+
+
+
+阻止事件冒泡
+- 标准方式 event.stopPropagation();
+
+- IE低版本 event.cancelBubble = true; 标准中已废弃
+
+location对象
+ //对象中的属性和方法
+        //location对象
+        console.log(window.location);
+
+        //    //地址栏上#及后面的内容
+           console.log(window.location.hash);
+        //    //主机名及端口号
+           console.log(window.location.host);
+        //    //主机名
+           console.log(window.location.hostname);
+        //    //文件的路径---相对路径
+           console.log(window.location.pathname);
+        //    //端口号
+           console.log(window.location.port);
+        //    //协议
+           console.log(window.location.protocol);
+        //    //搜索的内容
+           console.log(window.location.search);
+
+        onload=function () {
+            document.getElementById("btn").onclick=function () {
+                //设置跳转的页面的地址
+                //location.href="http://www.jd.com";//属性----------------->必须记住
+                //location.assign("http://www.jd.com");//方法
+                //location.reload();//重新加载--刷新
+                //location.replace("http://www.jd.com");//没有历史记录
+
+常用的鼠标和键盘事件
+
+
+- onmouseup 鼠标按键放开时触发
+
+- onmousedown 鼠标按键按下触发
+
+- onmousemove 鼠标移动触发
+
+- onkeyup 键盘按键抬起触发
+
+- onkeydown 键盘按键按下触发
+
+
+
+
+
+JS高级*************************************************
+创建对象的三种方式
+构造函数、实例对象、原型对象三种关系
+原型与原型链
+继承、拷贝、函数相关
+
+apply、call、bind
+apply的key将数组参数([param1,param2,param3]--转为（param1,param2,param3）；可以高效支持下面方法
+Math.max([])不支持------Math.max.apply（null,[]）支持
+(apply会将一个数组装换为一个参数接一个参数的传递给方法)
+Array.prototype.push.apply(arrA, arrB); //将数组arrB push到数组 arrA中。
+concat连接---返回新的数组
+
+巧妙之处：一般在目标函数只需要n个参数列表,而不接收一个数组的形式（[param1[,param2[,…[,paramN]]]]）
+,可以通过apply的方式巧妙地解决这个问题!
+
+函数做参数和返回值使用
+作用域及作用域链与预解析
+闭包
+沙箱
+递归
+深、浅拷贝
+正则表达
+
+
+
+
+
+jQuery 的功能概括************************************************************************
+
+1、html 的元素选取
+
+2、html的元素操作
+
+3、html dom遍历和修改
+
+4、js特效和动画效果
+
+5、css操作
+
+6、html事件操作
+
+7、ajax异步请求方式
+**********************************************************************jQuery功能
+
+安装：
+从 jquery.com 下载 jQuery 库
+从 CDN 中载入 jQuery, 如从 Google 中加载 jQuery
+
+**********************************************************************jQuery安装
+jQuery 入口函数与 JavaScript 入口函数的区别：
+
+ jQuery 的入口函数是在 html 所有标签(DOM)都加载之后，就会去执行。
+ JavaScript 的 window.onload 事件是等到所有内容，包括外部图片之类的文件加载完后，才会执行。
+
+**********************************************************************JS和jQuery区别
+TFD---------
+1.jQ选择器：
+    a.基本 id class 标签 交集 并集 通配
+    b.层级 子代 后代 ...
+    c.过滤  :first  :enen :odd :eq(index) :gt(index) :lt(index)....
+    d.筛选   .children() .parent() .siblings() .eq(index) .find() .next()  .prev()......
+
+2.mouseenter 与 mouseover 区别 
+3.$(this).index();----index需要注意：返回当前元素在所有"兄弟"中的索引	
+
+
+TSD---------------
+<div id="dv" class="aa bb cc dd">
+    <div>11</div>
+    <div>11</div>
+</div>
+
+1.css(name,value)   
+   a. 修改单个样式   $("li").css("backroundColor",""red);	
+   b. 修改多个样式   $("li").css({
+			  color: "red",
+     			   fontSize:"32px",	
+			     });
+   c. 获取样式：$("li").css("fontSize");
+      $('li').removeAttr（"name"）  jquery移除自定义属性
+======>js中设置，获取属性
+	div.style.width = "";   //设置CSS自带   
+	div.style.offsetWidt=""; //获取
+	
+	div.setAttribute("name","value"）;//设置自定义属性
+	div.getAttribute（"name"）;//获取自定义的值
+	div.removeAttribu（"name"）;//移除自定义属性，也可以移除自带的属性ru：div.removeAttribu（"class")		  	
+
+***********************************
+
+
+2.class 增加类样式，删除，判断，切换 
+
+   a. 增加   $("li").addClass("类名");
+   b. 删除   $("li").removeClass("类名");   
+   c. 判断   $("li").hasClass("类名")---返回boolean
+   d. 切换   $("li").toggleClass("类名")----   有就删除，没有就增加----效果切换
+			
+=====>js增加，删除，获取
+	div.className = "类名/空"    添加和删除
+	div.classList.remove（"类名");
+	div.classList.add("类名");
+	div.remove();  //整个标签一起删除，包括子类。jQ也可以使用如 $("#dv").children().eq(0).remove();  
+	div.removeChild(ele);//删除子元素 
+
+	获取属性值方式：
+	div.style.属性----只能获取style属性中设置的样式，	
+	<style></style>中的中getStyleCss获取-----（详解）
+	后续用这个获取
+	 function getStyleCss(element,attr) {
+        return window.getComputedStyle?window.getComputedStyle(element,null)[attr]:
+            element.currentStyle[attr]; }
+		
+3.attr（） 用于行内样式和CSS用法一样
+	$("#test").attr("test","aaa") // 设置  
+	$("#test").removeAttr("test") // 删除
+	
+4.prop（）用于行内样式中布尔值 checked, selected, or disabled--------------------------------好薄弱啊 
+
+ 			 
+
+两个对象（通信）---给外面对象设置点击事件-----里面对象要获取当前的点击的index，，可以设置自定义index 和函数自调用处理
+
+5.动画：三组基本动画和animate（CSS属性需要使用驼峰标识如:paddingLeft）
+	a.    show()/hide();
+	b.    slideDown()/slideUp()/slideToggle()	
+	c.    fadeIn()/fadeOut()/fadeToggle()
+	d.    animate(arg....) 对象/时间/速率/回调
+		
+6.节点问题
+	创建节点：$('<p></p>')；
+	加入：append或者appendTo	 div中加入或者p加入到div中----div元素的最后面
+	    ：propend或者prependTo                           div元素最前面
+	    .before                                       div的前面	
+	    .after		                          div的后面
+	删除：$（"div"）.html("");
+	      $("div")[0].innerHTML="";      上述两个都会出现内存泄漏，错误
+	      $("div").empty();-------------->使用（清空div内部的元素）
+	      $("div").remove();----删除整个	
+		
+	JS节点问题： 
+	创建：document.write("<p></p>");
+	      obj.innerHTML = "<p></p>";
+	      document.creatElement("p");
+	加入：appendChild
+	      insertBefore   例如：div.insertBefore(obj,div.firstElementChild);
+	删除：removeChild	
+	demo:删除div中的所有元素；
+	     a.$("#div").empty();     jQ
+	     b. While(div.firstElementChild){
+			div.removeChile(div.firstElementChild);
+		}				  
+	     c.div.innerHTML = "";			 	
+	
+	删除div的话 获取div父级元素，再从父级元素上删除	  
+
+
+7.val();设置和获取表单元素的值 如:input textarea
+	demo:京东搜索	
+
+8.html()和text()
+	html方法相当于innerHTML text方法相当于innerText
+	html方法会识别html标签，text方法会那内容直接当成字符串，并不会识别html标签
+
+9.width()和height()设置和获取，不带PX
+	innerWidth（） padding+width
+	outerWidth（） padding+wdith+border
+	
+	JS相关			
+	div.style.width = "200px";--设置
+	div.offsetWidth -------获取
+	div.style.width----获取行内样式	
+
+	网页可视区域 $(window).resize(function () {}//不断调整页面大小时
+	$(window).width();
+	$(window).height();
+	
+10.scrollTop()与scrollLeft();
+	$(window).scrollTop();页面向上卷曲的距离	
+
+1 document.body.clientWidth ==> BODY对象宽度
+ 2 document.body.clientHeight ==> BODY对象高度
+ 3 document.documentElement.clientWidth ==> 可见区域宽度
+ 4 document.documentElement.clientHeight ==> 可见区域高度
+ 5   
+ 6 document.body.clientWidth ==> 网页可见区域宽 
+ 7 document.body.clientHeight ==> 网页可见区域高
+ 8 document.body.offsetWidth ==> 网页可见区域宽(包括边线的宽)
+ 9 document.body.offsetHeight ==> 网页可见区域高(包括边线的高)
+10 document.body.scrollWidth ==> 网页正文全文宽document.body.scrollHeight ==> 网页正文全文高
+11 document.body.scrollTop ==> 网页被卷去的高
+12 document.body.scrollLeft ==> 网页被卷去的左
+13 window.screenTop ==> 网页正文部分上
+14 window.screenLeft ==> 网页正文部分左
+15 window.screen.height ==> 屏幕分辨率的高
+16 window.screen.width ==> 屏幕可用工作区高度
+17 window.screen.availHeight ==> 屏幕可用工作区高度
+18 window.screen.availWidth ==> 屏幕可用工作区宽度
+
+1 // 部分jQuery函数  
+2 $(window).height() 　              //浏览器时下窗口可视区域高度   
+3 $(document).height()　           //浏览器时下窗口文档的高度   
+4 $(document.body).height()　　　　　　//浏览器时下窗口文档body的高度   
+5 $(document.body).outerHeight(true)　//浏览器时下窗口文档body的总高度 包括border padding margin   
+6 $(window).width() 　   //浏览器时下窗口可视区域宽度   
+7 $(document).width()   //浏览器时下窗口文档对于象宽度   
+8 $(document.body).width()　　　　　　//浏览器时下窗口文档body的高度   
+9 $(document.body).outerWidth(true)　//浏览器时下窗口文档body的总宽度 包括border padding 
+
+1 HTML精确定位:  scrollLeft,scrollWidth,clientWidth,offsetWidth   
+ 2 scrollHeight: 获取对象的滚动高度。   
+ 3 scrollLeft: 设置或获取位于对象左边界和窗口中目前可见内容的最左端之间的距离   
+ 4 scrollTop:  设置或获取位于对象最顶端和窗口中可见内容的最顶端之间的距离   
+ 5 scrollWidth: 获取对象的滚动宽度   
+ 6 offsetHeight:获取对象相对于版面或由父坐标 offsetParent 属性指定的父坐标的高度   
+ 7 offsetLeft: 获取对象相对于版面或由 offsetParent 属性指定的父坐标的计算左侧位置   
+ 8 offsetTop:  获取对象相对于版面或由 offsetTop 属性指定的父坐标的计算顶端位置   
+ 9 event.clientX 相对文档的水平座标   
+10 event.clientY 相对文档的垂直座标   
+11 event.offsetX 相对容器的水平坐标   
+12 event.offsetY 相对容器的垂直坐标   
+13 document.documentElement.scrollTop 垂直方向滚动的值   
+14 event.clientX+document.documentElement.scrollTop 相对文档的水平座标+垂直方向滚动的量 
+
+
+
+
+三大家族：
+ function getStyle(element, attr) {
+            return window.getComputedStyle ? window.getComputedStyle(element, null)[attr] : element.currentStyle[attr] || 0;
+        }     带px
+//带px.宽不包括padding和border
+
+offset系列：offsetWidth   宽包括padding+border 不带px
+	        offsetLeft    未拖标：父padding+父margin+父border+自left+自margin	
+                          拖标：自己margin+left
+
+scroll系列：scrollWidth:元素中内容的实际的宽(没有边框),如果没有内容就是元素的宽
+	    scrollTop:向上卷曲距离	
+	    	
+function getScroll() {   //页面卷曲
+        return {
+            left : window.pageXOffset||document.body.scrollLeft||document.documentElement.scrollLeft||0,
+            top  : window.pageYOffset||document.body.scrollTop||document.documentElement.scrollTop||0
+        }
+    }
+function getViewPort() {  //页面可视区域
+        return {
+            width : document.documentElement.clientWidth||document.body.clientWidth||0,
+            height: document.documentElement.clientHeight||document.body.clientHeight||0
+        }
+    }
+    //监听可视区域
+window.onresize = function () {
+        console.log(getViewPort().width);
+        console.log(getViewPort().height);
+    };
+    //监听卷曲
+window.onscroll = function () {
+        console.log(getScroll().left);
+        console.log(getScroll().top);
+    };
+	//jquery监听
+$(window).resize(function () {
+                console.log($(window).width())
+            }).scroll(function () {
+                console.log($(window).scrollLeft())
+            })
+	
+client系列   clientWidth:可视区域的宽(没有边框),边框内部的宽度
+	          clientLeft:左边边框的宽度
+             clientTop :上面的边框的宽度	
+	
+事件绑定和解绑：
+$(selector).on(types,selector,data,callback); -----以click为例
+$(selector).off();
+$(selector).off("click")
+
+触发：
+$(selector).click();
+$(selector).trigger("click")；
+
+JS绑定事件和解绑事件
+3种方式：
+
+
+
+PHP系列********************************************************************
+
+//前面见php第一天知识点
+
+
+2 .date事件处理：
+// 1. 通过代码设置时区，更推荐
+date_default_timezone_set('PRC');
+// 2. 通过配置文件设置时区
+// date.timezone = PRC
+
+// // time 获取到的是 秒数为单位的时间戳
+// echo time();
+
+// echo '<br>';
+// // 格式化一个时间戳
+// // 第一个参数是一个时间格式
+// // 第二个参数是一个时间戳
+// // 默认时间戳获取的就是格林威治时间
+// echo date('Y-m-d H:i:s', time());
+
+$str = '2017-10-22 15:18:58';
+
+// 对已有时间做格式化
+// strtotime 可以用来将一个有格式的时间字符串 转换为一个 时间戳
+$timestamp = strtotime($str);
+
+// 注意单引号字符串问题
+echo date('Y年m月d日<b\r>H:i:s', $timestamp);
+
+
+3.文件引入
+与css中@import url('./layout.css');类似
+a.require与require_once  导入公共的配置信息，便于维护
+b.include与require区别   导入相同布局，require前提是文件必现存在
+<!-- require 特点： 一旦被载入的文件不存在就会报一个致命错误，当前文件不再往下执行 -->
+ <!-- include 特点： 载入文件不存在不会报错误（会有警告，警告不用管），当前文件继续执行 -->
+
+4.文件写入：
+$fp = fopen（filename,模式）；
+fwrite（$fp,data）;
+fclose（$fp）;
+首先r+,w+，和a+都是可读可写的，读取时的方式是一样的，关键在于写入方式的不同:
+r+: 从文件[头部][覆盖]原有内容 （[不删除]原有内容）；r+文件不存在时报错
+a+:从文件[尾部][追加]内容 （[不删除]原有内容）；
+w+:[完全删除]原有内容，然后[再添加]新的内容
+file_put_contents（filename，data，FILE_APPEND);
+
+5.文件上传 必现为method="post" enctype="multipart/form-data";
+  1.  !isset($_FILES['SSS']){
+		$message="空文件"；
+		return；
+	}
+ 2.判断是否有error
+	if（$_FILES['SSS']['error']!=FILE_ERR_OK）{
+		$message ="上传失败";
+		return；
+	}
+	
+3.接收文件/---临时-->网站许可目录
+	1.判断目录是否存在： if(file_exists('./uploads/'))；
+	2.不存在就创建mkdir（'./uploads/'）;
+	3.$moved = move_uploaded_file($source, $target);
+
+
+
+HTTP:相关信息
+2.1.3. 应用场景
+设置响应文件类型
+header('Content-Type: text/css');
+HTTP MIME type 指的就是 像 text/css text/html text/plain applcation/javascript
+重定向（跳转到其他网页）
+header('Location: https://www.baidu.com');
+
+
+新版myaql修改密码：
+1、进入bin目录 输入 mysql -uroot -p,输入安装时的原始默认密码
+
+
+
+
+2、进入mysql命令，输入ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY '自己的密码'，修改密码。（参考：https://blog.csdn.net/zwj1030711290/article/details/80039780）
+
+
+--------------------- 
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script>
+    /*  String 对象 ，不可变性，只读，不可改变
+    *   字符串的值之所以看起来是改变的,那是因为指向改变了,并不是真的值改变了
+    *   var str="123";
+        str="456";
+        console.log(str);
+    * */
+    /*
+    * 实例方法：必现通过new方式创建对象来调用的方法
+    * 静态方法：通过大写构造函数名调用的方法
+    *
+    *
+    * 常用方法；
+    *
+    *   var str = “Welcome to Beijing”
+    *   length
+    *   chatAt--->返回指定索引位置的字符串，超出索引，返回空字符串
+    *   fromCharCode-->返回对应的ASCII码  如SOS---83,79,83
+    *   concat -->连接字符串 str.concat（str1，str2.。。。。）
+    *   indexOf -->查找字符串，返回索引 str.index("e")------>返回  1；
+    *   lastIndexOf-->从后向前查找，返回索引 str.lastIndexOf("e")--->12 返回
+    *   replace(used,new)  ---->替换
+    *   split ("要干掉的字符串",切割后留下的个数);切割字符串--返回数组
+    *   console.log(str.split("")); //18个字符数组
+    *   slice(start,end)截取字符串  start~end-1 位置
+    *   substr(开始的位置，个数)
+    *   substring(开始的索引,结束的索引),返回截取后的字符串,不包含结束的索引的字符串
+    *   .toLocaleLowerCase();转小写
+     * .toLowerCase();转小写
+     * .toLocaleUpperCase()转大写
+     * .toUpperCase();转大写
+     * .trim();干掉字符串两端的空格
+
+       Array***************************************************************************************
+     * Array.isArray(对象)---->判断这个对象是不是数组
+     * instanceof关键字
+     * .concat(数组,数组,数组,...) 组合一个新的数组
+     * .every(函数)--返回值是布尔类型,函数作为参数使用,函数中有三个参数,第一个参数是元素的值，第二个参数是索引值,第三个参数是原来的数组(没用)
+     * 如果这个数组中的每个元素的值都符合条件,最后才返回的是true
+     *
+     * .filter(函数);返回的是数组中每一个元素都符合条件的元素,组成了一个新的数组
+     *
+     * .push(值);--->把值追加到数组中,加到最后了---返回值也是追加数据之后的数组长度
+     * .pop();--->删除数组中最后一个元素,返回值就是删除的这个值
+     * .shift();--->删除数组中第一个元素,返回值就是删除的这个值
+     * .unshift();--->向数组的第一个元素前面插入一个新的元素,----返回值是插入后的程度
+     * .forEach(函数)方法---遍历数组用---相当于for循环
+     * .indexOf(元素值);返回的是索引,没有则是-1
+     * .join("字符串");----返回的是一个字符串
+     * .map(函数);--->数组中的每个元素都要执行这个函数,把执行后的结果重新的全部的放在一个新的数组中
+     * .reverse();----->反转数组
+     * .sort();---排序的,可能不稳定,如果不稳定,请写MDN中的那个固定的代码
+     * .arr.slice(开始的索引,结束的索引);把截取的数组的值放在一个新的数组中,但是不包含结束的索引对应的元素值
+     * .splice(开始的位置,要删除的个数,替换的元素的值);一般是用于删除数组中的元素,或者是替换元素,或者是插入元素
+
+    *
+    * */
+        var str = "Welcome to Beijing";
+        // console.log(str.indexOf("e"));
+        // console.log(str.lastIndexOf("e"));
+        // console.log(str)
+        // console.log(str.split(""));
+
+    //软件测试技术部，驱动与稳定性组---找到驱动
+    // var tag_str = "驱动"；
+    // index=str.indexOf(tag_str)
+    // str.sbustr(index,2);
+
+    //:找到这个字符串中所有的 o 出现的位置
+    var str2 = "hello wod odd ott fbo nhyo";
+    for(var i=0;i<str2.length;i++){
+        var str3 = str2.charAt(i);
+        if (str3==="o"){
+            console.log(i);
+        }
+
+    }
+
+	<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>数据类型总结</title>
+</head>
+<body>
+<script>
+    /*
+    * typeof
+    * instanceof------判断构造函数产生的实例对象是什么类型（自定义类型key区分）
+    * object.prototype.toString.call()
+    *基本数据类型：Undefined、Null、Boolean、Number、String
+    * 复杂数据类型 数组、对象需要Object.prototype.toString方法，判断某个对象之属于哪种内置类型，自定义无法区分
+
+    * */
+    (function(){
+        function f1(){}
+        console.log(typeof 3.1);    //num
+        console.log(typeof "name"); //string
+        console.log(typeof undefined); //undefined
+        console.log(typeof false);    //boolean
+        console.log(typeof null);   //object
+        console.log(typeof []);    //object
+        console.log(typeof f1);   //function
+    }()) ; //typeof
+
+    (function () {
+        function Person() {
+        }
+        var per = new Person();
+        console.log(typeof per);
+        var str = new String("Hello world");
+        console.log(typeof str);
+        //上面返回都是object，无法精准判断类型---typeof
+        console.log(per instanceof Person);
+        console.log(Object.prototype.toString.call(per));//无法判断Person具体类型
+        console.log("=====================================================");
+        console.log(str instanceof String);
+    }());  //instanceof和Object.prototype.toString;
+
+    /*
+    * 同样是toString()方法，为什么obj.toString和Object.prototype.toString----toString为Object的原型方法
+    * 而arr、arr等都是重写了此方法，根据原型链现在自己里面找，找到就直接使用
+    * */
+
+
+    //验证下，删除数组中toString方法
+    var arr = [1,2,3,4,5];
+    console.log(arr.toString());
+    console.log(Object.prototype.toString.call(arr));
+
+    delete Array.prototype.toString; //删除数组中toString方法
+    console.log(arr.toString());//----此时调用的是Object的原型方法
+
+    function factorial (num) {   //经典阶乘
+        if (num <= 1) {
+            return 1
+        } else {
+            // return num * factorial(num - 1);
+            return num * arguments.callee(num-1);
+        }
+    }
+
+
+    var antherFactorial = factorial;
+    factorial = null;
+    alert(antherFactorial(4));  //出错
+
+//php----*****************************************************************************************Array和String
+<?php 
+// 1.Boolean  -TURE/FALSE 不区分大小写，将一个值转换成Boolean，用bool或者boolean
+$show_separators=true;
+if ($show_separators) {
+    echo "<h1>Boolean<h1>";
+}
+//强制转换
+var_dump((Boolean) 0);
+var_dump((bool) "");
+var_dump((bool) "0");
+var_dump((bool) array());
+var_dump((Boolean) FALSE);
+var_dump((bool) 0.5);
+echo "<br>";
+
+var_dump(12525452125555555555555555555512);//如果给定的一个数超出了 integer 的范围，将会被解释为 float溢出整形溢出成float
+var_dump(25/7); // float(3.5714285714286)
+var_dump((int)(25/7)); // int(3),强制转换
+var_dump(round(25/7))//4,四舍五入
+ ?>
+<?php
+$a = 1.23456789;
+$b = 1.23456780;
+$epsilon = 0.00001;
+
+if(abs($a-$b) < $epsilon) {
+    echo "true";
+}
+echo "<br>";
+?>
+<?php
+$a = 0.1;
+$b = 0.9;
+$c = 1;
+ 
+var_dump(($c-$b)==$a);                   // false
+var_dump(round(($c-$b),1)==round($a,1)); // true
+?>
+
+<!-- 强制转换成字符串(string) 或用 strval() 
+boolean的TRUE==>string的"1",
+boolean的FALSE==>string的"";
+
+PHP的数据类型转换属于强制转换，允许转换的PHP数据类型有：
+
+（int）、（integer）：转换成整形
+（float）、（double）、（real）：转换成浮点型
+（string）：转换成字符串
+（bool）、（boolean）：转换成布尔类型
+（array）：转换成数组
+（object）：转换成对象
+PHP数据类型有三种转换方式：
+
+在要转换的变量之前加上用括号括起来的目标类型
+使用3个具体类型的转换函数，intval()、floatval()、strval()
+使用通用类型转换函数settype(mixed var,string type)
+ 第一种转换方式： (int)  (bool)  (float)  (string)  (array) (object)
+ -->
+ <?php   
+$num4=12.8;   
+$flg=settype($num4,"int");     //将$num4类型转->int类型
+var_dump($flg);  //输出bool(true)   
+var_dump($num4); //输出int(12)   
+?> 
+
+<?php   
+$str="123.9abc";   
+$int=intval($str);     //转换后数值：123   
+$float=floatval($str); //转换后数值：123.9   
+$str=strval($float);   //转换后字符串："123.9"    
+?> 
+
+
+<?php 
+// 1.索引数组 2.关联数组
+$arr = array(
+	'key1' =>'value1',
+	'key2'=>'value2',
+	'key3'=>'value3',
+	'key4'=>'value4');
+// 2 .array_keys、array_values 获取key/value;
+var_dump(array_keys($arr));
+var_dump(array_values($arr));
+echo "<br><br>";
+
+// 3 .判断关联数组中某个key/value是否存在:方式一
+var_dump(array_key_exists('key1', $arr));
+var_dump(in_array('value1', $arr));
+echo "<br><br>";
+
+// 4.通过value获取相对应的key值
+//数组单元可以通过 array[key]或者array{key}
+var_dump(array_search('value1', $arr))."\r";
+var_dump($arr['key1']);
+var_dump($arr{'key1'});
+echo "<br><br>";
+
+// 5.数组中追加元素
+// 1.用方括号的语法新建／修改,不建议使用
+// $arr1['key'] = 'value';
+// $arr[] = 'value';
+
+
+//方式二
+//// 只有当 php.ini 中 display_errors = On 时候
+// 才会在界面上显示 notice 错误
+// 开发阶段一定设置为 On 生产阶段（上线）设置为 Off
+if ($arr['off']) {
+	echo "存在";
+}else {
+	echo "不存在";
+}
+ ?><br>
+ <?php 
+$id=0;
+    empty($id)?print "It's empty .":print "It's $id ."; 
+      //结果：It's empty .
+    print "<br>";
+    !isset($id)?print "It's empty .":print "It's $id .";
+  ?>
+<br><br>	
+
+
+<!--  
+6.  修改和删除某个值
+要修改某个值，通过其键名给该单元赋一个新值。
+要删除某键值对，对其调用 unset() 函数。但不会删除索引(原索引保留)，重建索引用array_values()
+ -->
+<?php
+$arr = array(5 => 1, 12 => 2);
+$arr[5] = 56;    // This is the same as $arr[13] = 56;
+                // at this point of the script
+var_dump($arr); 
+$arr["x"] = 42; // This adds a new element to
+                // the array with key "x"            
+unset($arr[5]); // This removes the element from the array
+var_dump($arr); 
+unset($arr);    // This deletes the whole array
+?>
+<br><br>
+<?php
+// 创建一个简单的数组
+$array = array(1, 2, 3, 4, 5);
+print_r($array);
+
+// 现在删除其中的所有元素，但保持数组本身不变:
+foreach ($array as $i => $value) {
+    unset($array[$i]);
+}
+print_r($array);
+
+// 添加一个单元（注意新的键名是 5，而不是你可能以为的 0）
+$array[] = 6;
+print_r($array);
+
+// 重新索引：（从0开始递增）
+$array = array_values($array);
+// $array[] = 7;
+print_r($array);
+?>
+<br><br>
+
+<?php 
+$arr = array(1,2,3,4,5);
+unset($arr[4]);
+var_dump($arr);
+$arr[] = 6;
+var_dump($arr);
+ ?><br><br>
+<?php foreach ($variable as $key => $value): ?>
+	
+<?php endforeach ?>
+</script>
+</body>
+</html>
+	
+</script>
+</body>
+</html>

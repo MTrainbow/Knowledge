@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="lib/bootstrap.css">
+    <link rel="stylesheet" href="lib/nprogress.css">
+    <script src="lib/nprogress.js"></script>
+    <style>
+        #loading {
+            display: none;
+            align-items: center;
+            justify-content: center;
+            position: fixed;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            top: 0;
+            background-color: rgba(0,0,0,.7);
+            z-index: 999;
+        }
+
+        .flip-txt-loading {
+            font: 26px Monospace;
+            letter-spacing: 5px;
+            color: #AF3F3F;
+        }
+
+        .flip-txt-loading > span {
+            animation: flip-txt  2s infinite;
+            display: inline-block;
+            transform-origin: 50% 50% -10px;
+            transform-style: preserve-3d;
+        }
+
+        .flip-txt-loading > span:nth-child(1) {
+            -webkit-animation-delay: 0.10s;
+            animation-delay: 0.10s;
+        }
+
+        .flip-txt-loading > span:nth-child(2) {
+            -webkit-animation-delay: 0.20s;
+            animation-delay: 0.20s;
+        }
+
+        .flip-txt-loading > span:nth-child(3) {
+            -webkit-animation-delay: 0.30s;
+            animation-delay: 0.30s;
+        }
+
+        .flip-txt-loading > span:nth-child(4) {
+            -webkit-animation-delay: 0.40s;
+            animation-delay: 0.40s;
+        }
+
+        .flip-txt-loading > span:nth-child(5) {
+            -webkit-animation-delay: 0.50s;
+            animation-delay: 0.50s;
+        }
+
+        .flip-txt-loading > span:nth-child(6) {
+            -webkit-animation-delay: 0.60s;
+            animation-delay: 0.60s;
+        }
+
+        .flip-txt-loading > span:nth-child(7) {
+            -webkit-animation-delay: 0.70s;
+            animation-delay: 0.70s;
+        }
+
+        @keyframes flip-txt  {
+            to {
+                -webkit-transform: rotateX(1turn);
+                transform: rotateX(1turn);
+            }
+        }
+
+    </style>
+</head>
+<body>
+    <div class="table-responsive">
+        <table class="table table-hover table-bordered">
+            <caption>基本信息</caption>
+            <a href="#" class="btn  btn-danger" id="btn" style="display: none">按钮</a>
+            <thead>
+                <tr class="text-center">
+                    <th class="text-center"><input type="checkbox" id="allcheck"></th>
+                    <th>名称</th>
+                    <th>名称</th>
+                    <th>城市</th>
+                    <th>名称</th>
+                </tr>
+            </thead>
+            <tbody id="list"></tbody>
+        </table>
+    </div>
+    <!-- 遮挡层 loading.awesomes.cn/loading.io -->
+    <div id="loading">
+        <div class="flip-txt-loading">
+            <span>L</span><span>o</span><span>a</span><span>d</span><span>i</span><span>n</span><span>g</span>
+        </div>
+    </div>
+<script src="lib/template-web.js"></script>
+<script src="lib/jquery-1.12.4.js"></script>
+<script id="m_temp" type="text/x-art-template">
+    <!--简洁模板-->
+    {{each comment}}
+    <tr class="text-center">
+        <td class="table-warning"><input type="checkbox" data-id="{{$value.id}}"></td>
+        <td class="table-info">{{$value.id}}</td>
+        <td class="table-danger">{{$value.genres[0]}}</td>
+        <td class="table-info">{{$value.title}}</td>
+        <td class="table-warning">{{$value.rating.average}}</td>
+    </tr>
+    {{/each}}
+</script>
+<script>
+    $(function () {
+        <!--进度条加载效果-->
+        $(document).ajaxStart(function () {
+            NProgress.start()
+            $('#loading').css('display','flex')
+        }).ajaxStop(function () {
+            NProgress.done()
+            $('#loading').css('display','none')
+        });
+        <!--jquery中ajax配合上面的效果-->
+        $.post('http://mtdy.ios/test.php',{name:"zhangsan", age:15},function (res) {
+            console.log(res)
+        });
+        <!-- ajaxp请求 -->
+        $.ajax({
+            url : 'http://api.douban.com/v2/movie/top250',
+            dataType:'jsonp',
+            jsonp:'callback',
+            jsonpCallback: 'handleResponse',
+            data:{
+                q : "javascript",
+                count : 10
+            },
+            success:function (response, status, xhr) {
+                console.log('状态为：' + status + ',状态是：' + xhr.statusText);
+                var html = template('m_temp',{comment : response.subjects});
+                // document.getElementById('list').innerHTML = html
+                $('#list').html(html);
+                <!-- 需要渲染后去添加功能-->
+                fun()
+            }
+        });
+        <!-- 选择功能-->
+        var fun = function () {
+            var arr = []
+            var $btn = $('#btn')
+            var $allcheck = $('#allcheck')
+            var $inputList = $('tbody input')
+            $inputList.on('change',function () {
+                var id = $(this).data('id')
+                if($(this).prop('checked')){
+                    arr.includes(id) || arr.push(id)
+                }else {
+                    arr.splice(arr.indexOf(id),1)
+                }
+                if ($inputList.length == $('tbody input:checked').length){
+                    $allcheck.prop('checked',true)
+                } else {
+                    $allcheck.prop('checked',false)
+                }
+                arr.length ? $btn.fadeIn() : $btn.fadeOut()
+                $btn.prop('search','?id='+arr)
+            })
+            $allcheck.on('change',function () {
+                $inputList.prop('checked',$(this).prop('checked')).trigger('change')
+            })
+        }
+
+
+
+
+
+
+
+
+
+        // $.getJSON({
+        //     url : 'http://api.douban.com/v2/movie/top250',
+        //     dataType:'jsonp',
+        //     data:{},
+        //     success:function (res) {
+        //         console.log(res)
+        //     }
+        // })
+    })
+
+</script>
+</body>
+</html>

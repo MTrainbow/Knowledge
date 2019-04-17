@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="css/css.css"/>
+  <title>webapi</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+    }
+
+    .box {
+      width: 350px;
+      height: 350px;
+      border: 1px solid #ccc;
+      position: relative;
+    }
+
+    .big {
+      width: 400px;
+      height: 400px;
+      position: absolute;
+      top: 0;
+      left: 360px;
+      border: 1px solid #ccc;
+      overflow: hidden;
+      display: none;
+    }
+
+    .mask {
+      width: 175px;
+      height: 175px;
+      background: rgba(255, 255, 0, 0.4);
+      position: absolute;
+      top: 0px;
+      left: 0px;
+      cursor: move;
+      display: none;
+    }
+    .small {
+      position: relative;
+    }
+
+    /*滚动条*/
+    .boxs {
+      width: 300px;
+      height: 500px;
+      border: 1px solid red;
+      margin-left:360px;
+      top: 0;
+      position: absolute;
+      overflow: hidden;
+    }
+
+    .content {
+      padding: 5px 18px 5px 0px;
+      position: absolute;
+      top: 0;
+      left: 0;
+
+    }
+
+    .scroll {
+      width: 18px;
+      height: 100%;
+      position: absolute;
+      top: 0;
+      right: 0;
+      background-color: #eee;
+    }
+
+    .bar {
+      /*height: 100px;*/
+      width: 100%;
+      position: absolute;
+      top: 0;
+      left: 0;
+      background-color: red;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+    #split{
+      position: absolute;
+      margin-left: 800px;
+      top: 0;
+      width: 220px;
+    }
+    #split input {
+      width: 150px;
+    }
+    #dis{
+      width: 220px;
+      position: absolute;
+      margin-left: 800px;
+      top: 180px;
+    }
+    #dis input {
+      width: 150px;
+    }
+    #m {
+      position: fixed;
+      top: 182px;
+      right: 625px;
+      color: #222;
+      z-index: 100;
+      font:italic bold 15px 微软雅黑;
+    }
+  #bd {
+    width: 300px;
+    position: fixed;
+    top: 20px;
+    right: 5px;
+  }
+    #txt {
+      width: 250px;
+    }
+  </style>
+</head>
+<body>
+<div class="box" id="box">
+  <div class="small">
+    <img src="images/small.png" width="350" alt=""/>
+    <div class="mask"></div><!--遮挡层-->
+  </div>
+  <div class="big">
+    <img src="images/big.jpg" width="800" alt=""/><!--大图-->
+  </div>
+</div>
+<div class="boxs" id="boxs">
+  <div class="content" id="content">
+    床前明月光啊，明月光，疑是地上霜啊，举头
+    床前明月光啊，明月光，疑是地上霜啊，举头
+    床前明月光啊，明月光，疑是地上霜啊，举头
+    床前明月光啊，明月光，疑是地上霜啊，举头
+    床前明月光啊，明月光，疑是地上霜啊，举头
+    床前明月光啊，明月光，疑是地上霜啊，举头
+    床前明月光啊，明月光，疑是地上霜啊，举头
+    床前明月光啊，明月光，疑是地上霜啊，举头
+    床前明月光啊，明月光，疑是地上霜啊，举头
+    床前明月光啊，明月光，疑是地上霜啊，举头
+    床前明月光啊，明月光，疑是地上霜啊，举头
+    床前明月光啊，明月光，疑是地上霜啊，举头
+    床前明月光啊，明月光，疑是地上霜啊，举头
+    床前明月光啊，明月光，疑是地上霜啊，举头
+    床前明月光啊，明月光，疑是地上霜啊，举头
+    床前明月光啊，明月光，疑是地上霜啊，举头
+    床前明月光啊，明月光，疑是地上霜啊，举头
+    床前明月光啊，明月光，疑是地上霜啊，举头
+    床前明月光啊，明月光，疑是地上霜啊，举头
+    床前明月光啊，明月光，疑是地上霜啊，举头
+    床前明月光啊，明月光，疑是地上霜啊，举头
+    床前明月光啊，明月光，疑是地上霜啊，举头
+    床前明月光啊，明月光，疑是地上霜啊，举头
+    床前明月光啊，明月光，疑是地上霜啊，举头
+    床前明月光啊，明月光，疑是地上霜啊，举头
+    床前明月光啊，明月光，疑是地上霜啊，举头
+    床前明月光啊，明月光，疑是地上霜啊，举头
+    床前明月光啊，明月光，疑是地上霜啊，举头
+    床前明月光啊，明月光，疑是地上霜啊，举头
+    床前明月光啊，明月光，疑是地上霜啊，举头
+    床前明月光啊，明月光，疑是地上霜啊，举头
+    床前明月光啊，明月光，疑是地上霜啊，举头
+    床前明月光啊，明月光，疑是地上霜啊，举头
+    床前明月光啊，明月光，疑是地上霜啊，举头
+    床前明月光啊，明月光，疑是地上霜啊，举头
+    床前明月光啊，明月光，疑是地上霜啊，举头
+    床前明月光啊，明月光，疑是地上霜啊，举头
+    床前明月光啊，明月光，疑是地上霜啊，举头
+    床前明月光啊，明月光，疑是地上霜啊，举头
+    床前明月光啊，明月光，疑是地上霜啊，举头
+    床前明月光啊，明月光，疑是地上霜啊，举头
+    床前明月光啊，明月光，疑是地上霜啊，举头
+    床前明月光啊，明月光，疑是地上霜啊，举头
+    床前明月光啊，明月光，疑是地上霜啊，举头
+    床前明月光啊，明月光，疑是地上霜啊，举头
+    床前明月光啊，明月光，疑是地上霜啊，举头
+    床前明月光啊，明月光，疑是地上霜啊，举头
+    床前明月光啊，明月光，疑是地上霜啊，举头
+    床前明月光啊，明月光，疑是地上霜啊，举头
+    床前明月光啊，明月光，疑是地上霜啊，举头
+    床前明月光啊，明月光，疑是地上霜啊，举头
+    床前明月光啊，明月光，疑是地上霜啊，举头
+    床前明月光啊，明月光，疑是地上霜啊，举头
+    床前明月光啊，明月光，疑是地上霜啊，举头
+    床前明月光啊，明月光，疑是地上霜啊，举头
+    床前明月光啊，明月光，疑是地上霜啊，举头
+    床前明月光啊，明月光，疑是地上霜啊，举头
+    床前明月光啊，明月光，疑是地上霜啊，举头
+    床前明月光啊，明月光，疑是地上霜啊，举头
+    床前明月光啊，明月光，疑是地上霜啊，举头
+    床前明月光啊，明月光，疑是地上霜啊，举头
+    床前明月光啊，明月光，疑是地上霜啊，举头
+    床前明月光啊，明月光，疑是地上霜啊，举头
+    床前明月光啊，明月光，疑是地上霜啊，举头
+    床前明月光啊，明月光，疑是地上霜啊，举头
+    床前明月光啊，明月光，疑是地上霜啊，举头
+    床前明月光啊，明月光，疑是地上霜啊，举头
+    床前明月光啊，明月光，疑是地上霜啊，举头
+    床前明月光啊，明月光，疑是地上霜啊，举头
+    床前明月光啊，明月光，疑是地上霜啊，举头
+    床前明月光啊，明月光，疑是地上霜啊，举头
+    床前明月光啊，明月光，疑是地上霜啊，举头
+    床前明月光啊，明月光，疑是地上霜啊，举头
+    床前明月光啊，明月光，疑是地上霜啊，举头
+    床前明月光啊，明月光，疑是地上霜啊，举头
+    床前明月光啊，明月光，疑是地上霜啊，举头
+    床前明月光啊，明月光，疑是地上霜啊，举头
+    床前明月光啊，明月光，疑是地上霜啊，举头
+    床前明月光啊，明月光，疑是地上霜啊，举头
+    床前明月光啊，明月光，疑是地上霜啊，举头
+    床前明月光啊，明月光，疑是地上霜啊，举头
+    床前明月光啊，明月光，疑是地上霜啊，举头
+    床前明月光啊，明月光，疑是地上霜啊，举头
+    床前明月光啊，明月光，疑是地上霜啊，举头
+    床前明月光啊，明月光，疑是地上霜啊，举头
+    床前明月光啊，明月光，疑是地上霜啊，举头
+    床前明月光啊，明月光，疑是地上霜啊，举头
+    床前明月光啊，明月光，疑是地上霜啊，举头
+    床前明月光啊，明月光，疑是地上霜啊，举头
+    床前明月光啊，明月光，疑是地上霜啊，举头
+    床前明月光啊，明月光，疑是地上霜啊，举头
+    床前明月光啊，明月光，疑是地上霜啊，举头
+    床前明月光啊，明月光，疑是地上霜啊，举头
+    床前明月光啊，明月光，疑是地上霜啊，举头
+    床前明月光啊，明月光，疑是地上霜啊，举头
+    床前明月光啊，明月光，疑是地上霜啊，举头
+    床前明月光啊，明月光，疑是地上霜啊，举头
+    床前明月光啊，明月光，疑是地上霜啊，举头
+    床前明月光啊，明月光，疑是地上霜啊，举头
+    床前明月光啊，明月光，疑是地上霜啊，举头
+    床前明月光啊，明月光，疑是地上霜啊，举头
+    床前明月光啊，明月光，疑是地上霜啊，举头
+    床前明月光啊，明月光，疑是地上霜啊，举头
+    床前明月光啊，明月光，疑是地上霜啊，举头
+    床前明月光啊，明月光，疑是地上霜啊，举头
+    床前明月光啊，明月光，疑是地上霜啊，举头
+    床前明月光啊，明月光，疑是地上霜啊，举头
+    床前明月光啊，明月光，疑是地上霜啊，举头
+    床前明月光啊，明月光，疑是地上霜啊，举头
+    床前明月光啊，明月光，疑是地上霜啊，举头
+    床前明月光啊，明月光，疑是地上霜啊，举头
+    床前明月光啊，明月光，疑是地上霜啊，举头
+    床前明月光啊，明月光，疑是地上霜啊，举头
+    床前明月光啊，明月光，疑是地上霜啊，举头嘿嘿
+
+  </div><!--文字内容-->
+  <div id="scroll" class="scroll"><!--装滚动条的层-->
+    <div class="bar" id="bar"></div><!--滚动条-->
+  </div>
+</div>
+<div id="split">
+  <input type="button" value="字符拼接" id="btn"><br>
+  <input type="text">
+  <input type="text">
+  <input type="text">
+  <input type="text">
+  <input type="text">
+  <input type="text">
+  <input type="text">
+</div>
+<em id="m">结果:</em>
+<div id="dis">
+  <input type="text" value="字符拼接推荐使用数组方式" id="ss">
+</div>
+<div id="bd">
+  <input type="text" id="txt" value="">
+  <input type="button" value="搜索" id="bss">
+</div>
+<div class="wrap" id="wrap">
+  <div class="slide" id="slide">
+    <ul>
+      <li><a href="#"><img src="images/slidepic1.jpg" alt=""/></a></li>
+      <li><a href="#"><img src="images/slidepic2.jpg" alt=""/></a></li>
+      <li><a href="#"><img src="images/slidepic3.jpg" alt=""/></a></li>
+      <li><a href="#"><img src="images/slidepic4.jpg" alt=""/></a></li>
+      <li><a href="#"><img src="images/slidepic5.jpg" alt=""/></a></li>
+    </ul>
+    <div class="arrow" id="arrow">
+      <a href="javascript:;" class="prev" id="arrLeft"></a>
+      <a href="javascript:;" class="next" id="arrRight"></a>
+    </div>
+  </div>
+</div>
+<script src="common.js"></script>
+<!--柳岩-->
+<script>
+    var box = my$("box");
+    var small = box.children[0];
+    var mask = small.children[1];
+    var big = box.children[1];
+    var bigImg = big.children[0];
+
+    box.onmouseenter = function (e) {
+        big.style.display = "block";
+        mask.style.display = "block";
+        my$("boxs").style.display = "none";
+    }
+    box.onmouseleave = function (e) {
+        big.style.display = "none";
+        mask.style.display = "none";
+        my$("boxs").style.display = "block";
+    }
+    small.onmousemove=function (e) {
+        var x = e.pageX - mask.offsetWidth/2;
+        var y = e.pageY- mask.offsetHeight/2;
+        x = x ;
+        y = y ;
+        x = x < 0 ? 0 : x;
+        y = y < 0 ? 0 : y;
+        x = x > small.offsetWidth-mask.offsetWidth ? small.offsetWidth-mask.offsetWidth : x ;
+        y = y > small.offsetHeight-mask.offsetHeight ? small.offsetHeight-mask.offsetHeight : y;
+        mask.style.left = x +"px";
+        mask.style.top = y +"px";
+        //mask移动距离/最大移动距离 = big移动距离/最大移动距离
+        var MaxX= small.offsetWidth-mask.offsetWidth;
+        var bigMaxX = bigImg.offsetWidth - big.offsetWidth;
+        var bigImgMoveX = x *bigMaxX / MaxX;
+        var bigImgMoveY = y *bigMaxX / MaxX;
+        bigImg.style.marginLeft = -bigImgMoveX+"px";
+        bigImg.style.marginTop = -bigImgMoveY+"px";
+    }
+</script>
+<!--自定义滚轮-->
+<script>
+    /**
+     * 1.设置滚动条高度 bar高度/scr高度 = bar高度/con高度
+     * 2.移动
+     *
+     * */
+    var boxs = my$("boxs");
+    var con = boxs.children[0];
+    var scr = boxs.children[1];
+    var bar = scr.children[0];
+    var height = boxs.offsetHeight*scr.offsetHeight/con.offsetHeight;
+    bar.style.height = height +"px";
+    bar.onmousedown = function (e) {
+        var spaceY = e.clientY - bar.offsetTop;  //scr距离顶部距离+bar点击位置的高度(自己)
+        document.onmousemove=function (e) {
+            var  y = e.clientY - spaceY ;
+            y = y < 0 ? 0 : y;
+            y = y > scr.offsetHeight - height ? scr.offsetHeight - height : y;
+            bar.style.top = y + 'px';
+            //设置鼠标移动的时候,文字不被选中
+            window.getSelection? window.getSelection().removeAllRanges():document.selection.empty();
+            // bar移动距离/最大移动距离 = 文字移动/最大移动
+            var conY = y*(con.offsetHeight-boxs.offsetHeight)/(scr.offsetHeight-height);
+            con.style.marginTop = -conY + "px";
+
+        }
+    }
+    document.onmouseup = function (e) {
+        document.onmousemove = null;
+    }
+</script>
+<!--字符串拼接-->
+<script>
+  var spi = my$("split").getElementsByTagName("input");
+  my$("btn").onclick = function (e) {
+      // var str = "";
+      var str = [];
+      for (var i=0;i<spi.length;i++){
+          if (spi[i].type!="button"){
+              // str += spi[i].value+"|";
+              str.push(spi[i].value);
+          }
+      }
+      // str += spi[spi.length-1].value;
+      my$("ss").value = str.join("|");;
+  }
+  onload =function (e) {
+    var divs = document.documentElement.children[1].children;
+    for (var i=0;i<divs.length-6;i++){
+        divs[i].style.display = "none";
+    }
+      load();  //加载
+  }
+  document.onkeydown = function (e) {
+      var divs = document.documentElement.children[1].children;
+      for (var i=0;i<divs.length-6;i++){   //divs.length = 13;
+          divs[i].style.display = "block";
+      }
+      if (e.keyCode==32){   //空格
+          onload();
+      }else if (e.keyCode==66){ //B
+          onload();
+          my$("wrap").style.display = "block";
+      }else if (e.keyCode==78){  //N
+          my$("wrap").style.display = "none";
+      }
+  }
+</script>
+<!--百度搜索-->
+<script>
+    var keyWords = ["小杨才是最纯洁的", "小杨才是最帅的", "小段是最猥琐的", "小超是最龌龊的", "传智播客是一个培训机构", "传说在传智有个很帅很纯洁的小杨", "苹果好吃", "苹果此次召回还是没有中国"];
+    my$("txt").onkeyup=function (e) {
+
+        if (my$("dv")){
+            my$("bd").removeChild(my$("dv"));
+        }
+        var bd = my$("bd");
+        var arrTemp = [];
+        var text = my$("txt").value;
+        for (var i=0;i<keyWords.length;i++){
+            if (keyWords[i].indexOf(text)==0){
+                arrTemp.push(keyWords[i]);
+            }
+        }
+        //输入框中没内容，删除div和无序创建
+        if (my$("txt").value.length==0||arrTemp.length==0){
+            if (my$("dv")){
+                my$("bd").removeChild(my$("dv"));
+            }
+            return;
+        }
+        //创建结构展示数据
+        var dvobj = document.createElement("div");
+        bd.appendChild(dvobj);
+        dvobj.id = "dv";
+        dvobj.style.width = "250px";
+        dvobj.style.border = "1px solid green";
+        for (var j=0; j<arrTemp.length; j++) {
+            var pObj = document.createElement("p");
+            dvobj.appendChild(pObj);
+            pObj.innerHTML = arrTemp[j];
+            pObj.style.margin = 0;
+            pObj.style.padding = 0;
+            pObj.style.cursor = "pointer";
+            pObj.style.marginTop = "5px";
+            pObj.style.marginLeft = "5px";
+            pObj.onmouseover = function (e) {
+                this.style.backgroundColor = "yellow";
+            };
+            pObj.onmouseout = function (e) {
+                this.style.backgroundColor = "";
+            };
+            pObj.onclick = function (e) {
+                my$("txt").value = this.innerText;
+                my$("bd").removeChild(my$("dv"));
+            }
+        }
+    }
+</script>
+<!--旋转木马-->
+<script>
+    //
+    var config = [
+        {
+            width: 400,
+            top: 20,
+            left: 50,
+            opacity: 0.2,
+            zIndex: 2
+        },//0
+        {
+            width: 600,
+            top: 70,
+            left: 0,
+            opacity: 0.8,
+            zIndex: 3
+        },//1
+        {
+            width: 800,
+            top: 100,
+            left: 200,
+            opacity: 1,
+            zIndex: 4
+        },//2
+        {
+            width: 600,
+            top: 70,
+            left: 600,
+            opacity: 0.8,
+            zIndex: 3
+        },//3
+        {
+            width: 400,
+            top: 20,
+            left: 750,
+            opacity: 0.2,
+            zIndex: 2
+        }//4
+    ];
+     function load (e) {
+        //鼠标进入
+        my$("slide").onmouseover = function () {
+            animate(my$("arrow"), {"opacity": 1});
+        };
+        //鼠标离开
+        my$("slide").onmouseout = function () {
+            animate(my$("arrow"), {"opacity": 0});
+        };
+        var lists = my$("slide").getElementsByTagName("li");
+        var flag = true;  //--------锁
+        function assign() {
+            for (var i=0 ;i<lists.length;i++){
+                animate(lists[i],config[i],function (e) {
+                    //动画执行完成后
+                    flag = true;
+                })
+            }
+        }
+        assign();
+        addEventLister(my$("arrRight"),"click",function (e) {
+            if (flag){
+                flag = false;
+                config.push(config.shift());
+                assign();
+            }
+        })
+        addEventLister(my$("arrLeft"),"click",function (e) {
+            if (flag){
+                flag = false;
+                config.unshift(config.pop());
+                assign();
+            }
+        })
+        //事件绑定
+        function addEventLister(element,type,fn) {
+            if (element.addEventListener){
+                element.addEventListener(type,fn,false);
+            } else if(element.attachEvent){
+                element.attachEvent("on"+type,fn);
+            }else {
+                element["on"+type] = fn;
+            }
+        }
+        function removeEventLister(element,type,fn) {
+            if (element.removeEventListener) {
+                element.removeEventListener(type,fn,false);
+            }else if(element.detachEvent){
+                element.detachEvent("on"+type,fn);
+            }else  {
+                element["on"+type] = null;
+            }
+        }
+        function getStyle(element,attr) {
+            return window.getComputedStyle ? window.getComputedStyle(element,null)[attr]:
+                element.currentStyle[attr];
+        }
+        //缓存动画
+        function animate(element,json,fn) {
+            clearInterval(element.timeId);
+            element.timeId = setInterval(function () {
+                var flag = true;
+                for (var key in json){
+                    if (key=="opacity"){
+                        var current = getStyle(element,key)*100;
+                        var target = json[key]*100;
+                        var step = (target-current)/10;
+                        step = step > 0 ? Math.ceil(step):Math.floor(step);
+                        current += step;
+                        element.style[key] = current/100;
+                    } else if(key=="zIndex"){
+                        element.style[key] = json[key];
+                    }else {
+                        var current = parseInt(getStyle(element,key));
+                        var target = json[key];
+                        var step = (target-current)/10;
+                        step = step > 0 ? Math.ceil(step):Math.floor(step);
+                        current += step;
+                        element.style[key] = current +"px";
+                    }
+                    if (current!=target){
+                        flag = false;
+                    }
+                }
+                if (flag){
+                    clearInterval(element.timeId);
+                    if (fn){
+                        fn();
+                    }
+                }
+            },10);
+        }
+    }
+
+</script>
+</body>
+</html>

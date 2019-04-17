@@ -1,0 +1,127 @@
+<style>
+    *{
+        padding: 0;
+        margin: 0;
+    }
+    body {
+        margin-left: 300px;
+    }
+    li {
+        list-style: none;
+    }
+    input{
+        padding: 5px;
+        margin: 10px;
+    }
+    ul li,div{
+        width: 250px;
+        padding: 10px 0;
+        margin-left: 10px;
+        border-bottom: 1px dashed #ccc;
+        height: 20px;
+    }
+    a{
+        float: right;
+    }
+    #dv{
+        height: 1500px;
+        display: none;
+    }
+</style>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<input type="search" id="search" placeholder="请输入搜索关键字">
+<input type="button" value="搜索">
+<div><a href="javascript:;">清空搜索记录</a></div>
+<ul>
+    <li>没有搜索记录</li>
+    <li><span>手机</span><a href="javascript:;">删除</a></li>
+    <li><span>手机</span><a href="javascript:;">删除</a></li>
+    <li><span>手机</span><a href="javascript:;">删除</a></li>
+    <li><span>手机</span><a href="javascript:;">删除</a></li>
+    <li><span>手机</span><a href="javascript:;">删除</a></li>
+</ul>
+<div id="dv"></div>
+<script src="../jquery-1.12.4.js"></script>
+<script>
+    $(function ($) {
+        if (!window.localStorage) {
+            alert("浏览器版本过低,请升级至最新")
+            return false
+        } else {
+            var histroyListJson = window.localStorage.getItem('histroyList') || '[]'
+            var histroyListArr = JSON.parse(histroyListJson)
+
+            var render = function () {
+                var html = ''
+                histroyListArr.forEach(function (item,index) {
+                    html += '<li><span>'+item+'</span><a data-id="'+index+'" href="javascript:;">删除</a></li>'
+                })
+                html = html || '<li>没有搜索记录</li>'
+                $('ul').html(html)
+            }
+            render()
+
+            //搜索添加
+            $('[type = "button"]').on('click',function () {
+                console.log('+++++++++++++++++++++++')
+                var text = $.trim($('[type = "search"]').val())
+                if (!text){
+                    alert('请正确填写搜索内容')
+                }
+                histroyListArr.includes(text) || histroyListArr.push(text)
+                localStorage.setItem('histroyList',JSON.stringify(histroyListArr))
+                render()
+                $('[type = "search"]').val('')
+            })
+            
+            //删除功能
+            $('ul').on('click','a',function () {
+                var index = $(this).data('id')
+                histroyListArr.splice(index,1)
+                localStorage.setItem('histroyList',JSON.stringify(histroyListArr))
+                render()
+            })
+
+            //清除
+            $('div a').on('click',function () {
+                histroyListArr = []
+                localStorage.setItem('histroyList','')
+                render()
+            })
+
+            //监听键盘事件
+            $(document).on('keydown',function (e) {
+               if (e.keyCode == 13){
+                   var text = $.trim($('[type = "search"]').val())
+                   if (!text){
+                       return false
+                   }
+                   $('[type = "button"]').trigger('click')
+               }
+            })
+        }
+		//模拟百度显示
+        $('[type = "search"]').on('focus',function () {
+          var htmls = ''
+            console.log(histroyListArr)
+            histroyListArr.forEach(function (item,index) {
+                htmls += '<li>'+item+'</li>'
+            })
+            if (htmls.length){
+              $('#dv').show()
+            }
+            $('#dv').html(htmls)
+        }).on('blur',function(){
+            $('#dv').hide()
+        })
+
+    })
+</script>
+</body>
+</html>
